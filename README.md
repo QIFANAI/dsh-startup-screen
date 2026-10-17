@@ -23,7 +23,7 @@ DeepSeek Harness 的开机启动动画插件：**黑幕标识 → 过曝洗白 �
 
 ### 方式一：安装包（推荐）
 
-1. 从 [Releases](../../releases) 下载 `dsh-startup-screen-<版本>.tgz`。
+1. 从 [Releases](https://github.com/QIFANAI/dsh-startup-screen/releases) 下载 `dsh-startup-screen-<版本>.tgz`。
 2. **完全退出** DeepSeek Harness 桌面端（profile 由 Electron 独占）。
 3. 安装并重启：
 
