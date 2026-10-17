@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>dsh-startup-screen · 版式核对夹具</title>
+<!-- 直接复用插件真实的样式与运行时，只为无头截图核对版式，不参与打包 -->
+<link rel="stylesheet" href="../lib/splash.css">
+<style>html, body { margin: 0; height: 100%; overflow: hidden; background: #12131a; }</style>
+</head>
+<body>
+<div id="dsh-startup-root" class="dsu-root dsu-boot"></div>
+<script>
+  window.__DSH_STARTUP_SCRIPT_URL__ = '../lib/splash.js';
+  var qs = new URLSearchParams(location.search);
+  window.__DSH_STARTUP__ = {
+    enabled: true,
+    mode: 'always',
+    theme: qs.get('theme') === 'light' ? 'light' : 'dark',  /* 用户实际用暗色，浅色也要回归 */
+    /* 无头抓帧不稳定：默认速度下"第 5 步"只持续约 1.6 秒，virtual-time 很难落进去。
+       传 ?speed=0.35 把整段拉长到约 2.9 倍，窗口宽了才好抓。 */
+    speed: Number(qs.get('speed')) || 1,
+    requireInteraction: false,  /* 自动走完全程，便于按虚拟时间抓任意一步 */
+    allowSkip: true,
+    sound: false,
+    voice: false,
+    bgm: false,
+    identity: 'HQF',
+    identityId: '080UR',
+    accessLevel: '3',
+    brand1: 'DEEPSEEK',
+    brand2: 'SYNTHESIZE INTELLIGENCE',
+    brand3a: 'HARNESS',
+    brand3b: 'OS',
+    orgZh: '深度求索',
+    orgEn: 'DEEPSEEK',
+    orgSub: 'DEEPSEEK HARNESS',
+    welcomeBox: 'DEEPSEEK HARNESS',
+    footer: 'POWERED BY DEEPSEEK',
+    accent: '#ff7500',
+    glitchA: '#ff3b30',
+    glitchB: '#2971b8',
+    /* 批次 3：真实自检读数。夹具给一组假事实，让截图能覆盖到那两行；
+       真实安装时由 Host 的 collectFacts() 从 ctx 采。 */
+    facts: {
+      ready: true,
+      profile: 'DESKTOP',
+      version: '0.2.1-rc.1',
+      model: 'deepseek-flash',
+      sandbox: 'workspace-write',
+      plugins: 191,
+      activePlugins: 159,
+      bundleCount: 21,
+      workspace: 'default-workspace',
+      sessions: 42,
+      hash: 'A7F31C4E'
+    }
+  };
+  document.documentElement.classList.add('dsu-lock');
+</script>
+<script defer src="../lib/splash.js"></script>
+</body>
+</html>

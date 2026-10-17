@@ -1,0 +1,23 @@
+name: smoke
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: host
+        run: node package/test/smoke-host.mjs
+      - name: splash
+        run: node package/test/smoke-splash.mjs
+      - name: client
+        run: node package/test/smoke-client.mjs
+      - name: desktop-boot
+        run: node package/test/smoke-desktop-boot.mjs
