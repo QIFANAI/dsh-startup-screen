@@ -1,5 +1,7 @@
 # dsh-startup-screen
 
+[![smoke](https://github.com/QIFANAI/dsh-startup-screen/actions/workflows/test.yml/badge.svg)](https://github.com/QIFANAI/dsh-startup-screen/actions/workflows/test.yml)
+
 DeepSeek Harness 的开机启动动画插件：**黑幕标识 → 过曝洗白 → 暖白档案底板 →
 五步访问授权 → 色散故障揭幕**。不是播片，每一步都能交互、能跳过、能改文案。
 
