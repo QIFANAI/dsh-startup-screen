@@ -10,6 +10,9 @@ import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const PLUGIN_ROOT = fileURLToPath(new URL('..', import.meta.url))
+/* 开源仓库不附带版权素材；有就验下发，没有就验优雅 404，两边都要有断言 */
+const ASSET_DIR = path.join(PLUGIN_ROOT, 'lib', 'assets')
+const hasAsset = (name) => fs.existsSync(path.join(ASSET_DIR, name))
 
 /** 找一份真实的 DSH dist/index.html 来做注入测试；找不到就用等价的最小样本。
  *  跨平台：Windows 的 npx 缓存在 %LOCALAPPDATA%，POSIX 在 ~/.npm 或 ~/.cache。 */
@@ -143,23 +146,41 @@ console.log('\n[3b] 音频素材路由')
 r = await call('prefix /dsh-startup/asset')
 check('请求 /asset 无文件名 -> 404', r.statusCode === 404, String(r.statusCode))
 r = await call('prefix /dsh-startup/asset', 'GET', undefined, '/dsh-startup/asset/sfx-tick.mp3')
-check('sfx-tick.mp3 -> 200 + audio/mpeg', r.statusCode === 200 && r.headers['Content-Type'] === 'audio/mpeg', r.headers['Content-Type'])
-check('sfx-tick.mp3 有内容', r.body.length > 500, r.body.length + ' bytes')
+if (hasAsset('sfx-tick.mp3')) {
+  check('sfx-tick.mp3 -> 200 + audio/mpeg', r.statusCode === 200 && r.headers['Content-Type'] === 'audio/mpeg', r.headers['Content-Type'])
+  check('sfx-tick.mp3 有内容', r.body.length > 500, r.body.length + ' bytes')
+} else {
+  check('sfx-tick.mp3 缺失 -> 404', r.statusCode === 404, String(r.statusCode))
+  check('sfx-tick.mp3 缺失 -> 空体', r.body.length === 0, r.body.length + ' bytes')
+}
 r = await call('prefix /dsh-startup/asset', 'GET', undefined, '/dsh-startup/asset/../../package.json')
 check('目录穿越被拒 -> 404', r.statusCode === 404, String(r.statusCode))
 r = await call('prefix /dsh-startup/asset', 'GET', undefined, '/dsh-startup/asset/nope.mp3')
 check('不存在的素材 -> 404', r.statusCode === 404, String(r.statusCode))
 for (const f of ['line-1', 'line-2', 'line-3', 'line-4', 'line-5', 'line-6']) {
   const rr = await call('prefix /dsh-startup/asset', 'GET', undefined, '/dsh-startup/asset/' + f + '.mp3')
-  check('真声素材 ' + f + '.mp3 -> 200', rr.statusCode === 200 && rr.body.length > 5000, rr.statusCode + ' ' + rr.body.length)
+  if (hasAsset(f + '.mp3')) {
+    check('真声素材 ' + f + '.mp3 -> 200', rr.statusCode === 200 && rr.body.length > 5000, rr.statusCode + ' ' + rr.body.length)
+  } else {
+    check('真声素材 ' + f + '.mp3 缺失 -> 404', rr.statusCode === 404 && rr.body.length === 0, rr.statusCode + ' ' + rr.body.length)
+  }
 }
 /* 背景音乐：3.6 MB 的大文件走「prefix 路由 + fs 直读」这条路，单独断言能整份下发 */
 r = await call('prefix /dsh-startup/asset', 'GET', undefined, '/dsh-startup/asset/bgm.mp3')
-check('背景音乐 bgm.mp3 -> 200 + audio/mpeg', r.statusCode === 200 && r.headers['Content-Type'] === 'audio/mpeg', r.statusCode + ' ' + r.headers['Content-Type'])
-check('背景音乐整份下发（> 1 MB）', r.body.length > 1024 * 1024, (r.body.length / 1048576).toFixed(2) + ' MB')
+if (hasAsset('bgm.mp3')) {
+  check('背景音乐 bgm.mp3 -> 200 + audio/mpeg', r.statusCode === 200 && r.headers['Content-Type'] === 'audio/mpeg', r.statusCode + ' ' + r.headers['Content-Type'])
+  check('背景音乐整份下发（> 1 MB）', r.body.length > 1024 * 1024, (r.body.length / 1048576).toFixed(2) + ' MB')
+} else {
+  check('背景音乐缺失 -> 404', r.statusCode === 404, String(r.statusCode))
+  check('背景音乐缺失 -> 空体', r.body.length === 0, r.body.length + ' bytes')
+}
 /* 版本串破缓存：查询串必须在取 basename 之前被剥掉，否则白名单会拒 */
 r = await call('prefix /dsh-startup/asset', 'GET', undefined, '/dsh-startup/asset/bgm.mp3?v=1.2.0')
-check('素材 URL 带 ?v= 版本串仍能取到', r.statusCode === 200 && r.body.length > 1024 * 1024, r.statusCode + ' ' + r.body.length)
+if (hasAsset('bgm.mp3')) {
+  check('素材 URL 带 ?v= 版本串仍能取到', r.statusCode === 200 && r.body.length > 1024 * 1024, r.statusCode + ' ' + r.body.length)
+} else {
+  check('素材缺失时带 ?v= 仍返回 404', r.statusCode === 404, String(r.statusCode))
+}
 
 console.log('\n[4] 配置读写落盘')
 r = await call('exact /dsh-startup/config')
