@@ -10,7 +10,7 @@ DeepSeek Harness 的开机启动动画插件：**黑幕标识 → 过曝洗白 �
 
 | 暗色 | 浅色 |
 |---|---|
-| ![暗色主题](docs/screenshots/dark.webp) | ![浅色主题](docs/screenshots/light.webp) |
+| ![暗色主题](assets/preview-dark.gif) | ![浅色主题](assets/preview-light.gif) |
 
 ## 特性
 
