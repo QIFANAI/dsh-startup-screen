@@ -5,6 +5,32 @@
 
 ---
 
+## 1.6.1 · 完整素材开源版（2026-11-27）
+
+**改**：素材改为随仓库与 Release 完整发布，不再维护「只有代码和 line-6」的公开版。
+
+- 补入 `package/lib/assets/`：`bgm.mp3`（3.53 MB）、`line-1.mp3` ~ `line-5.mp3`、
+  `sfx-tick.mp3`、`sfx-ticks-run.mp3` 共 8 段；`line-6.mp3` 原已随仓库存在。
+  合计 9 段音频全部入库、全部进 npm 包。
+- `.gitignore` 删掉 `package/lib/assets/*.mp3` 与两条 `!` 例外，公开仓库不再排除素材；
+  `package/tools/final-voice/`、`reference/`、`_bgm/` 等制作中间产物仍只在本地。
+- 声明口径统一为：素材随仓库与 Release 完整发布；权利归各自权利人；代码 MIT
+  **不覆盖**素材；再分发前自行确认授权并自行承担再分发责任；权利人异议可开 Issue。
+  同步改写 `README.md`、`THIRD-PARTY-NOTICES.md`、`package/README.md`、
+  `package/lib/assets/README.md` 与安装包内的 `installer/THIRD-PARTY-NOTICES.md`。
+- 版本号 1.6.0 → 1.6.1：`package/package.json`、`lib/client.js` 兜底常量、根 README、
+  INSTALL / package README 的安装示例、`scripts/reinstall-startup-screen.cmd`。
+
+**为什么**：公开版缺 8 段素材，用户装完听不到台词、界面音效与 BGM，观感与本地
+完整版不一致，还容易被当成插件故障。作者决定改为完整开源，并在声明里写清权利边界，
+素材再分发责任由使用者自行承担。
+
+**验证**：`npm --prefix package test` 四套冒烟 352 项全过（`smoke-host` 73 /
+`smoke-splash` 194 / `smoke-client` 40 / `smoke-desktop-boot` 45）；`npm pack` 产出
+3,784,795 字节的 `releases/dsh-startup-screen-1.6.1.tgz`，`tar -tzf` 确认
+`package/lib/assets/` 下 9 个 mp3 齐全；`releases/SHA256SUMS` 记录 tgz 校验值，
+`git ls-tree -r v1.6.1` 复核 9 个 mp3 均在 tag 内。
+
 ## 1.6.0 · 活体光场与文字清晰度
 
 **改**：保留 1.5.0 的光学仪器构图，重做"清晰度"和"背景生命感"。

@@ -4,7 +4,7 @@ rem Run this only when the "Startup animation" section is missing from DSH
 rem Settings after a restart. Fully quit DeepSeek Harness Desktop first.
 rem Bump the version below when a newer tarball is added to ..\releases.
 setlocal
-set "TGZ=%~dp0..\releases\dsh-startup-screen-1.6.0.tgz"
+set "TGZ=%~dp0..\releases\dsh-startup-screen-1.6.1.tgz"
 set "DSHCLI=dsh"
 
 if not exist "%TGZ%" (

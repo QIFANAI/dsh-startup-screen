@@ -10,20 +10,24 @@ profile-backup/
 _tmp_*/
 _开工简报.md
 _开工简报.历史/
+_项目卡.md
 
-# ── 不随仓库分发的第三方/私有素材 ───────────────────────────────
-# 原片截取的台词与音效、商业 BGM、原始录音工程
-# 说明见 THIRD-PARTY-NOTICES.md
-package/lib/assets/*.mp3
-!package/lib/assets/README.md
-!package/lib/assets/line-6.mp3
+# ── 仅本地保留的开发期素材（不进仓库、不进发布包）────────────────
+# 原始录音工程、制作参考图与母带；说明见 THIRD-PARTY-NOTICES.md
 package/tools/final-voice/
 package/tools/reference/
 package/tools/_bgm/
 package/tools/_voice/
+# Wallpaper Engine 参考素材（本地复刻用，体量大且含第三方资源）
+3396722575/
 
 # ── 系统与编辑器 ───────────────────────────────────────────────
 .DS_Store
 Thumbs.db
 .idea/
 .vscode/
+
+# 安装包构建产物
+releases/*.zip
+releases/*.zip.sha256
+_installer_build/
